@@ -35,6 +35,19 @@ class GatewayService(object):
         )
 
     @http(
+        "GET", "/products"
+    )
+    def get_products(self, request):
+        """
+        Gets all products
+        """
+        product = self.products_rpc.list()
+        return Response(
+            ProductSchema(many=True).dumps(product).data,
+            mimetype='application/json'
+        )
+
+    @http(
         "POST", "/products",
         expected_exceptions=(ValidationError, BadRequest)
     )
